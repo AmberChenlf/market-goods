@@ -1,2 +1,15 @@
 server:
   port: 8080  #当前运行端口
+
+#mybatis配置如下
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  #数据库表中的下划线转驼峰
+  mapper-locations: classpath:mybatis/mapper/**/*.xml   #mapper文件的路径，这个路径下面的mapper.xml会自动加载为mybatis的映射文件
+
+spring:
+  datasource:
+    username: root
+    password: 12345678
+    url: jdbc:mysql://localhost:3306/goods_market_db?serverTimezone=GMT
+    driver-class-name: com.mysql.jdbc.Driver
