@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    #good_title:hover{
+         color:red;
+         cursor:pointer;
+     }
+    #login_btn:hover{
+        color:red;
+        cursor:pointer;
+    }
+
+</style>
 <body>
 <!--头部-->
     <div style="border:none;display:flex;align-items: center">
@@ -20,8 +31,11 @@
             </div>
             </div>
         </div>
-        <div style="width: 20%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        <div style="width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
             我的购物车(10)
+        </div>
+        <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+            登录
         </div>
 
     </div>
@@ -42,7 +56,19 @@
             </div>
 
         </div>
-        <div style="width:80%;border:solid">shop list</div>
+        <div style="width:80%;border:solid;display: flex;padding: 20px 5px; box-shadow: 0 0 2px lightgray">
+            <div style="padding:10px;border:solid lightgray 1px;box-shadow: aliceblue;width: 33%;">
+                <div><img src="/images/index/phone.jpg" style="width:100%"></div>
+                <div style="color: orangered; padding:5px 0">￥<span style="font-size:22px">1800</span></div>
+                <div id="good_title">
+                    三星 Galaxy S10(SM-G9730)骁龙855超感屏 超声波屏下指纹 4G手机 全网通 双卡双待游戏手机 8GB+128GB皓玉白
+                </div>
+                <div style="color:orange; font-size:15px;font-weight: bold;padding:5px">77万+<span style="color:gray">评价</span></div>
+                <div style="color:gray; font-size:12px">天水师范学院天猫超市</div>
+
+            </div>
+
+        </div>
     </div>
 
 </body>

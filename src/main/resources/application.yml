@@ -8,8 +8,9 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/**/*.xml   #mapper文件的路径，这个路径下面的mapper.xml会自动加载为mybatis的映射文件
 
 spring:
-  datasource:
+  datasource: #数据源配置
     username: root
     password: 12345678
     url: jdbc:mysql://localhost:3306/goods_market_db?serverTimezone=GMT
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver #mysql 8.0有cj
+    type: com.alibaba.druid.pool.DruidDataSource
