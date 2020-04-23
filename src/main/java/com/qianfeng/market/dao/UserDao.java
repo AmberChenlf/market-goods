@@ -17,4 +17,11 @@ public interface UserDao {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    /**
+     * 根据用户手机号查找用户信息
+     * @param phone
+     * @return
+     */
+    User selectByPhone(String phone);
 }

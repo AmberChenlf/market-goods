@@ -10,7 +10,7 @@
 <body>
 <div style="display: flex;justify-content: center;position: absolute;left:0;right: 0;top:0;bottom:0">
     <div style="display: flex;justify-content: center;align-items:center;margin-top:1%">
-        <form class="layui-form" action="" style="border:solid red 1px;padding:20px;border-radius: 10px;box-shadow: 0 0 5px rgba(255,0,0,0.3)" >
+        <form class="layui-form" th:action="@{/pages/front/login}" method="post" style="border:solid red 1px;padding:20px;border-radius: 10px;box-shadow: 0 0 5px rgba(255,0,0,0.3)" >
 
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -27,10 +27,13 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">登录密码</label>
                     <div class="layui-input-inline">
-                        <input type="password" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+                        <input type="password" name="password" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
+            </div>
+            <div class="layui-form-item">
+                <div th:text="${errorMsg}" style="color:red"></div>
             </div>
             <div class="layui-form-item">
                 <div class="layui-form-item">
