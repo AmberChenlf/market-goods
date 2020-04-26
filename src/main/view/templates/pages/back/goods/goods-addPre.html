@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href ="@{/layui/css/layui.css}"/>
+    <!--      引入layui的js文件-->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/wangEditor/wangEditor.js}"></script>
+
+<body class="layui-card-body layui-card">
+    <h3 style="text-align: center">添加商品</h3>
+    <div style="display:flex">
+    <div>
+        <form id="goodsForm" class="layui-form" action="javascript:;" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品类型</label>
+                <div class="layui-input-block" style="width:200px">
+                    <select name="goodsTypeId" lay-filter="aihao" >
+                        <option value=""></option>
+                        <option value="0">写作</option>
+                        <option value="1" selected="">阅读</option>
+                        <option value="2">游戏</option>
+                        <option value="3">音乐</option>
+                        <option value="4">旅行</option>
+                    </select>
+                </div>
+            </div>
+<!--        商品名称-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="title" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+
+        </div>
+        <!--商品原价-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品原价</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="oldPrice" class="layui-input" lay-verify="required|number">
+                </div>
+            </div>
+        </div>
+        <!--            商品现价格-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品现价</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="price" class="layui-input" lay-verify="required|number">
+                </div>
+            </div>
+        </div>
+        <!--是否在售-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否在售</label>
+            <div class="layui-input-block">
+                <input type="checkbox" checked="" name="onSale" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+            </div>
+        </div>
+        <!--            库存-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品库存</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="count" class="layui-input" >
+                </div>
+            </div>
+        </div>
+
+        <!--            商家-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">售卖商家</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="merchantName" class="layui-input" >
+                </div>
+            </div>
+        </div>
+
+        <!--            评价次数-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">评价次数</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <input type="text" name="evaluationCount" class="layui-input" >
+                </div>
+            </div>
+        </div>
+        <!--            商品图片-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品图片</label>
+                <div class="layui-input-inline" style="width:200px">
+                    <img id="previewImg" th:src="@{/images/index/logo.png}" style="border-radius: 5px;border:solid red 1px; width: 120px; height: 125px">
+                    <input type="file" name="pic" id="pic" style="display:none">
+                </div>
+            </div>
+        </div>
+        <!--        添加按钮-->
+        <div class="layui-form-item">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" id="commit" class="layui-btn" lay-submit="" lay-filter="goodsForm" >确定添加</button>
+                </div>
+            </div>
+            <input type="hidden" name="detail" id="detail">
+        </div>
+
+
+        </form>
+
+
+    </div>
+
+<!--    右边商品详情-->
+    <div style="flex-grow: 1;">
+        <h3 style="text-align: center">商品详情</h3>
+        <div id="wangEdit" style="width:100%"></div>
+    </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.js}"></script>
+    <script>
+
+        var E = window.wangEditor;
+        var editor = new E("#wangEdit");
+        editor.customConfig.uploadImgShowBase64 = true;
+        editor.customConfig.uploadImgParamsWithUrl = true;
+        editor.create();
+
+        layui.use(['form', 'layedit', 'laydate','layer','table'], function() {
+
+                var form = layui.form
+                    , layer = layui.layer
+                    , layedit = layui.layedit
+                    , laydate = layui.laydate
+                    , table = layui.table;
+
+                form.on('submit(goodsForm)', function(data){
+                    let text = editor.txt.html();
+                    $("#detail").val(text);
+                    //console.log(data.elem); //被执行事件的元素DOM对象，一般为button对象
+                    //console.log(data.form) ;//被执行提交的form对象，一般在存在form标签时才会返回
+                    //console.log(data.field) ;//当前容器的全部表单字段，名值对形式：{name: value}
+
+                    let formData = new FormData(data.form);
+                    $.ajax({
+                        url: "/pages/back/goods/add",
+                        contentType: false,//传送包括图片和文字，设置为false
+                        data:formData,
+                        dataType:'json',
+                        processData:false,
+                        success:function (data) {
+                            if(data.res){
+                                layer.msg(data.msg);
+                            }
+
+                        },
+                        type:'post',
+                    })
+
+                    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            });
+
+        $("#previewImg").click(function () {
+            alert('you')
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

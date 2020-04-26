@@ -45,11 +45,6 @@ public class Goods implements Serializable {
     private String onSale;
 
     /**
-     * 详情
-     */
-    private Integer detail;
-
-    /**
      * 库存
 
      */
@@ -64,6 +59,11 @@ public class Goods implements Serializable {
      * 评价
      */
     private Integer evaluationCount;
+
+    /**
+     * 详情
+     */
+    private String detail;
 
     private static final long serialVersionUID = 1L;
 
@@ -123,14 +123,6 @@ public class Goods implements Serializable {
         this.onSale = onSale;
     }
 
-    public Integer getDetail() {
-        return detail;
-    }
-
-    public void setDetail(Integer detail) {
-        this.detail = detail;
-    }
-
     public Integer getCount() {
         return count;
     }
@@ -153,5 +145,13 @@ public class Goods implements Serializable {
 
     public void setEvaluationCount(Integer evaluationCount) {
         this.evaluationCount = evaluationCount;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

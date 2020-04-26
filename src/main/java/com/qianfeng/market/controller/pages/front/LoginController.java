@@ -22,6 +22,7 @@ public class LoginController {
 
     @RequestMapping("loginPage")
     String loginPage(){
+
         return "pages/front/login/loginPage.html";
     }
 
@@ -38,6 +39,7 @@ public class LoginController {
         }
         boolean loginResult=userService.login(user);
         if(loginResult){
+            //return "pages/back/index.html";
             return "pages/back/index";
         }
         model.addAttribute("errorMsg","登录失败，手机号或者密码错误");
