@@ -1,7 +1,6 @@
 package com.qianfeng.market.controller.pages;
 
 import com.qianfeng.market.consts.GoodsConsts;
-import com.qianfeng.market.controller.pages.back.GoodsController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;

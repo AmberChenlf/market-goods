@@ -1,4 +1,4 @@
-package com.qianfeng.market.controller.pages.back;
+package com.qianfeng.market.controller.pages.back.goods;
 
 import com.qianfeng.market.consts.GoodsConsts;
 import com.qianfeng.market.controller.pages.BaseController;
@@ -32,7 +32,7 @@ public class GoodsController extends BaseController {
     @RequestMapping("add")
     @ResponseBody
     Map<String, Object> add(Goods goods, MultipartFile pic){
-        System.out.println(goods);
+
         if ("on".equals(goods.getOnSale())){
             goods.setOnSale("YES");
         }else{

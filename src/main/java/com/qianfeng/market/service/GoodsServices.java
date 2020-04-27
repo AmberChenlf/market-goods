@@ -8,6 +8,7 @@ import java.util.Map;
  * @author bingqiong.cbb
  * @date 2020-04-27 01:38
  **/
+
 public interface GoodsServices {
     /**
      * 增加商品

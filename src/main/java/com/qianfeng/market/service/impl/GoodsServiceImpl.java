@@ -34,6 +34,6 @@ public class GoodsServiceImpl implements GoodsServices {
             resMap.put("res", false);//增加成功
             resMap.put("msg","增加 失败");
         }
-        return null;
+        return resMap;
     }
 }
