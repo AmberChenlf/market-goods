@@ -3,6 +3,8 @@ package com.qianfeng.market.dao;
 import com.qianfeng.market.pojo.entity.GoodsType;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface GoodsTypeDao {
     int deleteByPrimaryKey(Integer goodsTypeId);
@@ -16,4 +18,5 @@ public interface GoodsTypeDao {
     int updateByPrimaryKeySelective(GoodsType record);
 
     int updateByPrimaryKey(GoodsType record);
+    List<GoodsType> selectTypesByParentId(Integer i);
 }

@@ -16,15 +16,12 @@
     <div>
         <form id="typeForm" class="layui-form" action="javascript:;" >
             <div class="layui-form-item">
-                <label class="layui-form-label">一级类型</label>
+                <label class="layui-form-label">上级类型</label>
                 <div class="layui-input-block" style="width:200px">
-                    <select name="goodsTypeId" lay-filter="aihao" >
-                        <option value=""></option>
-                        <option value="0">写作</option>
-                        <option value="1" selected="">阅读</option>
-                        <option value="2">游戏</option>
-                        <option value="3">音乐</option>
-                        <option value="4">旅行</option>
+                    <select name="parentTypeId" lay-filter="aihao" >
+                        <option value="-1">一级类型</option>
+                        <option value="0" th:value="${t.goodsTypeId}" th:each="t:${types}" th:text="${t.typeName}">写作</option>
+
                     </select>
                 </div>
             </div>
@@ -43,7 +40,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">排序数字</label>
                     <div class="layui-input-inline" style="width:200px">
-                        <input type="text" name="oldPrice" class="layui-input" lay-verify="required|number">
+                        <input type="text" name="sort" class="layui-input" lay-verify="required|number">
                     </div>
                 </div>
             </div>
@@ -94,8 +91,9 @@
 
             let formData = new FormData(data.form);
             $.ajax({
+                type:'post',
                 url: "/pages/back/type/add",
-               contentType: false,//传送包括图片和文字，设置为false
+                contentType: false,//传送包括图片和文字，设置为false
                 data:formData,
                 dataType:'json',
                 processData:false,
@@ -105,7 +103,7 @@
                     }
 
                 },
-                type:'post',
+
             });
 
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。

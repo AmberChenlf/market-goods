@@ -84,4 +84,13 @@
       icon_class = #{iconClass,jdbcType=VARCHAR}
     where goods_type_id = #{goodsTypeId,jdbcType=INTEGER}
   </update>
+<!--  根据parentId查找goodstype-->
+  <select id="selectTypesByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods_type
+    where parent_type_id = #{parentTypeId,jdbcType=INTEGER}
+  </select>
+
+
 </mapper>
