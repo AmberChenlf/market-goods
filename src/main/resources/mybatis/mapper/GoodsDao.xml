@@ -175,4 +175,13 @@
       evaluation_count = #{evaluationCount,jdbcType=INTEGER}
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="getGoodsByTypeId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where goods_type_id = #{goodsTypeId,jdbcType=INTEGER}
+  </select>
+
 </mapper>

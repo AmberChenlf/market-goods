@@ -5,13 +5,11 @@ import com.qianfeng.market.pojo.dto.ResponseDTO;
 import com.qianfeng.market.pojo.entity.GoodsType;
 import com.qianfeng.market.service.GoodsTypeService;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author bingqiong.cbb

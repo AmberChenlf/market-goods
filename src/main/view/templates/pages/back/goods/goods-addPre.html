@@ -8,6 +8,7 @@
     <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>-->
 <script type="text/javascript" th:inline="javascript" th:src="@{/wangEditor/wangEditor.js}"></script>
 
 <body class="layui-card-body layui-card">
@@ -16,15 +17,20 @@
     <div>
         <form id="goodsForm" class="layui-form" action="javascript:;" >
             <div class="layui-form-item">
+                <label class="layui-form-label" >顶级类型</label>
+                <div class="layui-input-block" style="width:200px" >
+                    <select  lay-filter="parentTypes" id="parentTypes" >
+                        <option th:each="t:${types1}" th:value="${t.goodsTypeId}" th:text="${t.typeName}">写作</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">商品类型</label>
                 <div class="layui-input-block" style="width:200px">
-                    <select name="goodsTypeId" lay-filter="aihao" >
-                        <option value=""></option>
-                        <option value="0">写作</option>
-                        <option value="1" selected="">阅读</option>
-                        <option value="2">游戏</option>
-                        <option value="3">音乐</option>
-                        <option value="4">旅行</option>
+                    <select name="goodsTypeId" lay-filter="types2" id="goodsTypeId" >
+                        <option th:each="t:${types1[0].childrenTypes}" th:value="${t.goodsTypeId}" th:text="${t.typeName}"></option>
+
                     </select>
                 </div>
             </div>
@@ -124,8 +130,8 @@
         <div id="wangEdit" style="width:100%"></div>
     </div>
     </div>
-    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.js}"></script>
-    <script>
+    <script type="text/javascript"  th:src="@{/layui/layui.js}"></script>
+    <script th:inline="javascript">
 
         var E = window.wangEditor;
         var editor = new E("#wangEdit");
@@ -138,9 +144,46 @@
                 var form = layui.form
                     , layer = layui.layer
                     , layedit = layui.layedit
-                    , laydate = layui.laydate
-                    , table = layui.table;
+                    , laydate = layui.laydate;
+                var table = layui.table;
+                //监听商品类型select
+            //todo:得不到types,第九集前10分钟
+            form.on('select(parentTypes)', function(data){
+                //改变前清空一下
+                $('#goodsTypeId').empty();
+                 let pid = data.value;
+                 //console.log(pid);
+                 let types = [[${types1}]];
+                 //console.log(types);
+                let childrenTypes;
+                for(let x=0;x<types.length;x++){
+                    let type = types[x];
+                    //console.log(type.goodsTypeId)
+                    if(pid == type.goodsTypeId){
+                        childrenTypes = type.childrenTypes;
+                        //console.log(childrenTypes)
 
+                    }
+                }
+                //console.log(childrenTypes); //得到select原始DOM对象
+                //console.log(types); //得到被选中的值
+                //console.log(data.elem); //得到select原始DOM对象
+                //console.log(data.value); //得到被选中的值
+                //console.log(data.othis); //得到美化后的DOM对象
+                if(childrenTypes!=null){
+                    for(let x=0;x<childrenTypes.length;x++){
+                         let type = childrenTypes[x];
+
+                        let options = $("<option value='"+type.goodsTypeId+"'>"+type.typeName+"</option>");
+                        //console.log(options);
+                        $('#goodsTypeId').append(options);
+                    }
+                }
+                form.render();//重新渲染
+            });
+
+
+            //监听添加按钮
                 form.on('submit(goodsForm)', function(data){
                     let text = editor.txt.html();
                     $("#detail").val(text);
@@ -185,5 +228,7 @@
 
 
     </script>
+
+
 </body>
 </html>

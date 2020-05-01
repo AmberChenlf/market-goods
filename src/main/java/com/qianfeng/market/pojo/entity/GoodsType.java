@@ -7,6 +7,7 @@ import java.io.Serializable;
  * @author 
  */
 public class GoodsType implements Serializable {
+
     /**
      * 商品类型id
 

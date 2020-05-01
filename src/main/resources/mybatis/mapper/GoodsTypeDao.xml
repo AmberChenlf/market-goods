@@ -85,12 +85,21 @@
     where goods_type_id = #{goodsTypeId,jdbcType=INTEGER}
   </update>
 <!--  根据parentId查找goodstype-->
-  <select id="selectTypesByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectTypesByParentId" parameterType="java.lang.Integer" resultType="com.qianfeng.market.pojo.vo.GoodsTypeVO">
     select
     <include refid="Base_Column_List" />
     from goods_type
     where parent_type_id = #{parentTypeId,jdbcType=INTEGER}
   </select>
 
+
+  <select id="selectTypesByParentIds"  resultType="com.qianfeng.market.pojo.vo.GoodsTypeVO">
+    select
+    <include refid="Base_Column_List" />
+    from goods_type
+    where parent_type_id in <foreach collection="ids" item="g" separator="," close=")" open="(">
+    #{g.goodsTypeId}
+  </foreach>
+  </select>
 
 </mapper>

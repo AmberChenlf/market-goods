@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href ="@{/layui/css/layui.css}"/>
+    <!--      引入layui的js文件-->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
+
+</head>
+<script type="text/javascript"  th:src="@{/layui/layui.js}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+
+<body style ="padding:20px">
+<!--头部-->
+<div style="border:none;display:flex;align-items: center">
+    <div style="width: 40% ;">
+        <img src="/images/index/logo.gif">
+    </div>
+    <div style="width: 40%">
+        <div style="display: flex;border: solid red 2px;">
+            <div style="width:80%">
+                <input type="text" style="height: 30px;border:none;width:100%">
+            </div>
+            <div style="color:white; background:red; padding: 5px 20px;width:20%;text-align:center">
+                搜索
+            </div>
+        </div>
+    </div>
+    <div style="width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        我的购物车(10)
+    </div>
+    <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        登录
+    </div>
+
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md-offset1 layui-col-md10" >
+        <div style="display: flex;">
+<!--            图片-->
+            <div style="padding: 20px">
+                <img th:src="${goods.img}" style="width: 300px;height: 200px;">
+            </div>
+<!--            商品信息-->
+            <div style="padding: 20px">
+<!--                标题-->
+                <h2 th:text="${goods.title}" style="font-weight: bold;;"></h2>
+<!--                价格-->
+                <h2 th:text="'原价:'+${goods.oldPrice}" style="margin: 10px;text-decoration: line-through;font-size:15px"></h2>
+                <h2 >
+                    <div style="margin: 10px;">
+                        <span style="font-size: 15px">秒杀价：</span>
+                        <span th:text="${goods.price}" style="font-weight: bold;color: orangered; margin: 10px"></span>
+
+                    </div>
+                </h2>
+<!--                库存-->
+                <div th:text="'库存:'+${goods.count}" style="margin:10px"></div>
+                <div th:text="'商家:'+${goods.merchantName}" style="margin: 10px;"></div>
+                <div th:text="'评价次数:'+${goods.evaluationCount}" style="margin: 10px;"></div>
+
+
+            </div>
+        </div>
+<!--        商品详情-->
+        <div th:utext="${goods.detail}" style="margin-left: 100px">
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'laydate','layer','table'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var table = layui.table;
+
+    });
+
+</script>
+
+</body>
+</html>

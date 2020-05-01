@@ -1,12 +1,14 @@
 package com.qianfeng.market.service.impl;
 
 import com.qianfeng.market.dao.GoodsDao;
+import com.qianfeng.market.pojo.dto.ResponseDTO;
 import com.qianfeng.market.pojo.entity.Goods;
 import com.qianfeng.market.service.GoodsServices;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,5 +37,34 @@ public class GoodsServiceImpl implements GoodsServices {
             resMap.put("msg","增加 失败");
         }
         return resMap;
+    }
+
+    /**
+     * 根据商品类型寻找这个类型的所有商品
+     *
+     * @param id
+     */
+    @Override
+    public ResponseDTO getGoodsByTypeId(Integer id) {
+        List<Goods> goods = null;
+
+       try{
+           goods = goodsDao.getGoodsByTypeId(id);}
+       catch (Exception e){
+           e.printStackTrace();
+           return  ResponseDTO.fail("查询失败");
+       }
+        return ResponseDTO.ok("查询商品成功",goods);
+    }
+
+    /**
+     * 根据idc查看商品
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Goods getgoodsDetail(Integer id) {
+        return goodsDao.selectByPrimaryKey(id);
     }
 }

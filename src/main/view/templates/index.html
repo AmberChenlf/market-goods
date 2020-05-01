@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href ="@{/layui/css/layui.css}"/>
+    <!--      引入layui的js文件-->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
+
 </head>
+<script type="text/javascript"  th:src="@{/layui/layui.js}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 <style>
     #good_title:hover{
          color:red;
@@ -13,6 +20,11 @@
         color:red;
         cursor:pointer;
     }
+    [id^=type]:hover{
+                    color:red;
+                    cursor:pointer;
+
+                }
 
 </style>
 <body>
@@ -42,22 +54,17 @@
 
     <div style="display:flex">
         <div style="width:20%;border:solid">
-            <div style="display:flex; align-items: center" th:each="x:${#numbers.sequence(1,6)}">
-                <div>电子产品</div>
-                <div style="display: flex;flex-wrap: wrap">
-                    <div style="margin:5px">手机</div>
-                    <div style="margin:5px">电脑</div>
-                    <div style="margin:5px">平板</div>
-                    <div style="margin:5px">数码</div>
+            <div style="display:flex; align-items: center;padding:5px" th:each="t:${types}">
+                <div th:text="${t.typeName}" style="font-size:16px;font-weight: bold">电子产品</div>
+                    <div style="display: flex;flex-wrap: wrap; margin-left: 30px">
+                        <div th:id="'type-'+${ct.goodsTypeId}" style="margin:5px" th:each="ct:${t.childrenTypes}" th:text="${ct.typeName}">手机</div>
 
-                </div>
-
-
+                    </div>
             </div>
 
         </div>
-        <div style="width:80%;border:solid;display: flex;padding: 20px 5px; box-shadow: 0 0 2px lightgray">
-            <div style="padding:10px;border:solid lightgray 1px;box-shadow: aliceblue;width: 33%;">
+        <div id="goodsDiv" style="width:80%;border:solid;display: flex;padding: 20px 5px; box-shadow: 0 0 2px lightgray;flex-wrap: wrap">
+            <div style="padding:10px;border:solid lightgray 1px;box-shadow: aliceblue;width: 26%; margin: 15px" th:each="x:${#numbers.sequence(1,20)}">
                 <div><img src="/images/index/phone.jpg" style="width:100%"></div>
                 <div style="color: orangered; padding:5px 0">￥<span style="font-size:22px">1800</span></div>
                 <div id="good_title">
@@ -70,6 +77,61 @@
 
         </div>
     </div>
+
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['form', 'layedit', 'laydate','layer','table'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var table = layui.table;
+
+       $("[id^=type-]").click(function () {
+           let typeId = this.id.split("-")[1];
+           //未选中的颜色为黑；选中颜色为红
+           $("[id^=type-]").css({
+               color:''
+           });
+           $(this).css({
+               color:'red'
+           });
+           $.post("/pages/back/goods/getGoodsByTypeId/"+typeId,{},function (res) {
+               console.log(res);
+               let goodsDiv =  $("#goodsDiv");
+               //清空页面
+              goodsDiv.empty();
+               if(res.res){
+                   let data = res.data;
+                   for (let x=0;x<data.length;x++){
+                       let g = data[x];
+                       let goodsItem = $("<div style=\"padding:10px;border:solid lightgray 1px;box-shadow: aliceblue;width: 26%; margin: 15px\">\n" +
+                           "                <div><img src='"+g.img+"' style=\"width:100%\"></div>\n" +
+                           "                <div style=\"color: orangered; padding:5px 0\">￥<span style=\"font-size:22px\">"+g.price+"</span></div>\n" +
+                           "                <div id=\"good_title\">\n" +g.title+"</div>\n" +
+                           "                <div style=\"color:orange; font-size:15px;font-weight: bold;padding:5px\">"+g.evaluationCount+"<span style=\"color:gray\">评价</span></div>\n" +
+                           "                <div style=\"color:gray; font-size:12px\">"+g.merchantName+"</div>\n" +
+                           "\n" +
+                           "            </div>");
+                       goodsDiv.append(goodsItem);
+                   //    点击商品，跳转到商品详情页面
+                       goodsItem.click(function () {
+                           window.location = "pages/front/goods/goodsDetail/"+g.goodsId;
+
+                       });
+
+
+                   }
+               }
+
+           })
+
+
+       })
+        $("[id^=type-]:eq(0)").click()
+    });
+
+</script>
 
 </body>
 </html>

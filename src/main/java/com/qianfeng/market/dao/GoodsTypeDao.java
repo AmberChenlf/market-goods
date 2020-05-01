@@ -1,7 +1,9 @@
 package com.qianfeng.market.dao;
 
 import com.qianfeng.market.pojo.entity.GoodsType;
+import com.qianfeng.market.pojo.vo.GoodsTypeVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +20,8 @@ public interface GoodsTypeDao {
     int updateByPrimaryKeySelective(GoodsType record);
 
     int updateByPrimaryKey(GoodsType record);
-    List<GoodsType> selectTypesByParentId(Integer i);
+    List<GoodsTypeVO> selectTypesByParentId(Integer i);
+
+    List<GoodsTypeVO> selectTypesByParentIds(@Param("ids")List parentTypes);
+
 }

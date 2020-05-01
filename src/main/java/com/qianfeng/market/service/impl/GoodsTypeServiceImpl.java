@@ -3,6 +3,7 @@ package com.qianfeng.market.service.impl;
 import com.qianfeng.market.dao.GoodsTypeDao;
 import com.qianfeng.market.pojo.dto.ResponseDTO;
 import com.qianfeng.market.pojo.entity.GoodsType;
+import com.qianfeng.market.pojo.vo.GoodsTypeVO;
 import com.qianfeng.market.service.GoodsTypeService;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author bingqiong.cbb
@@ -35,8 +37,20 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
      * @return
      */
     @Override
-    public List<GoodsType> selectTypesByParentId(int i) {
+    public List<GoodsTypeVO> selectTypesByParentId(int i) {
 
-        return goodsTypeDao.selectTypesByParentId(i);
+        List<GoodsTypeVO> parentTypes = goodsTypeDao.selectTypesByParentId(i);
+//        for (GoodsTypeVO g:parentTypes){//for循环里调用查询语句影响性能
+//            List<GoodsTypeVO> childrenTypes = goodsTypeDao.selectTypesByParentId(g.getParentTypeId());
+//            g.setChildrenTypes(childrenTypes);
+//        }
+
+        List<GoodsTypeVO> childrenTypes = goodsTypeDao.selectTypesByParentIds(parentTypes );
+        Map<Integer,List<GoodsTypeVO>> collect = childrenTypes.stream().collect(Collectors.groupingBy(GoodsTypeVO::getParentTypeId));
+        for(GoodsTypeVO g:parentTypes){
+            List<GoodsTypeVO> childTypes = collect.get(g.getGoodsTypeId());
+            g.setChildrenTypes(childTypes);
+        }
+        return parentTypes;
     }
 }

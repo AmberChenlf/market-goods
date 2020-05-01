@@ -14,3 +14,5 @@ spring:
     url: jdbc:mysql://localhost:3306/goods_market_db?serverTimezone=GMT
     driver-class-name: com.mysql.cj.jdbc.Driver #mysql 8.0有cj
     type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    cache: false
