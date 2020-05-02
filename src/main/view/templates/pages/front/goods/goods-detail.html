@@ -29,8 +29,8 @@
             </div>
         </div>
     </div>
-    <div style="width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
-        我的购物车(10)
+    <div style="color:red;width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        我的购物车(<span id="myCarCount" th:text="${session.carCount}">0</span>)
     </div>
     <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
         登录
@@ -50,11 +50,11 @@
 <!--                标题-->
                 <h2 th:text="${goods.title}" style="font-weight: bold;;"></h2>
 <!--                价格-->
-                <h2 th:text="'原价:'+${goods.oldPrice}" style="margin: 10px;text-decoration: line-through;font-size:15px"></h2>
+                <h2 th:text="'原价:'+${goods.oldPrice}+'元'" style="margin: 10px;text-decoration: line-through;font-size:15px"></h2>
                 <h2 >
                     <div style="margin: 10px;">
                         <span style="font-size: 15px">秒杀价：</span>
-                        <span th:text="${goods.price}" style="font-weight: bold;color: orangered; margin: 10px"></span>
+                        <span th:text="${goods.price}+'元'" style="font-weight: bold;color: orangered; margin: 10px"></span>
 
                     </div>
                 </h2>
@@ -63,7 +63,23 @@
                 <div th:text="'商家:'+${goods.merchantName}" style="margin: 10px;"></div>
                 <div th:text="'评价次数:'+${goods.evaluationCount}" style="margin: 10px;"></div>
 
+<!--购物车-->
+                <div style="display: flex;padding:10px">
+                    <div style="display: flex;align-items: center;">
+                        <div id="addCount"
+                             style="user-select:none;cursor:pointer;width:30px;height:30px;display: flex;align-items: center;justify-content: center;background: rgb(240,240,240);font-size: 20px;font-weight: bold;">+</div>
+                        <input id="count" style="height: 25px;width: 60px;"value="0">
+                        <div id="subCount"
+                             style="user-select:none;cursor:pointer;width:30px;height:30px;display: flex;align-items: center;justify-content: center;background: rgb(240,240,240);font-size: 20px;font-weight: bold;">-</div>
 
+                    </div>
+                    <div id="addShopCar" style="margin-left:15px;color: white;font-weight: bold;font-size: 18px; background: red;padding:5px;cursor: pointer;
+">
+                        加入购物车
+                    </div>
+
+
+                </div>
             </div>
         </div>
 <!--        商品详情-->
@@ -83,6 +99,45 @@
             , layedit = layui.layedit
             , laydate = layui.laydate;
         var table = layui.table;
+        $("#addCount").click(function () {
+            let count = $("#count").val();
+            count++;
+            $("#count").val(count)
+        });
+        $("#subCount").click(function () {
+
+
+            let count = $("#count").val();
+            if(count >0){
+                count--;
+            }else{
+                alert("商品不能再减少了！！！");
+            }
+
+            $("#count").val(count)
+        });
+
+        $("#addShopCar").click(function () {
+            let shopCar = {};
+            shopCar.goodsId = [[${goods.goodsId}]];
+            shopCar.count = $('#count').val();
+            $.post('/pages/back/shopCar/edit',shopCar,function (res) {
+                console.log(res.status)
+                if(res.res){
+                    layer.msg(res.msg)
+                    //更新购物车数量
+                    $("#myCarCount").text(res.data);
+                }else{
+                    if(401 == res.status){
+
+                        window.location="/pages/front/loginPage";
+
+                    }
+                }
+
+            });
+
+        });
 
     });
 

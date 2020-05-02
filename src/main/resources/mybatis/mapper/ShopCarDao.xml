@@ -10,11 +10,29 @@
   <sql id="Base_Column_List">
     shop_car_id, user_id, goods_id, `count`
   </sql>
+  <select id="findCarByUserIdAndGoodsId" parameterType="com.qianfeng.market.pojo.entity.ShopCar" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include> from shop_car where user_id=#{userId} and goods_id=#{goodsId}
+  </select>
+
+<!--  根据用户id返回购物车对象-->
+  <select id="findUserCars" parameterType="java.lang.Integer" resultType="com.qianfeng.market.pojo.vo.ShopCarVO">
+    select
+    <include refid="Base_Column_List" />
+    from shop_car
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from shop_car
     where shop_car_id = #{shopCarId,jdbcType=INTEGER}
+  </select>
+<!--  根据用户id返回购物车商品数量 -->
+  <select id="selectCarCountByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(*)
+    from shop_car
+    where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from shop_car

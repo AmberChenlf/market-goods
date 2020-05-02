@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href ="@{/layui/css/layui.css}"/>
+    <!--      引入layui的js文件-->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
+
+</head>
+<script type="text/javascript"  th:src="@{/layui/layui.js}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+<body style ="padding:20px">
+<style>
+    #goodsItemDiv>div{
+        padding:10px 20px;
+    }
+</style>
+<!--头部-->
+<div style="border:none;display:flex;align-items: center">
+    <div style="width: 40% ;">
+        <img src="/images/index/logo.gif">
+    </div>
+    <div style="width: 40%">
+        <div style="display: flex;border: solid red 2px;">
+            <div style="width:80%">
+                <input type="text" style="height: 30px;border:none;width:100%">
+            </div>
+            <div style="color:white; background:red; padding: 5px 20px;width:20%;text-align:center">
+                搜索
+            </div>
+        </div>
+    </div>
+    <div style="color:red;width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        我的购物车(<span id="myCarCount" th:text="${session.carCount}">0</span>)
+    </div>
+    <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        登录
+    </div>
+
+</div>
+<!--最后悬浮框-->
+<div style="width: 100%;position: fixed;bottom:0;height: 60px;box-shadow: 0 0 10px lightgray">
+    <div class="layui-row  layui-col-space12" >
+        <div class="layui-col-md2"></div>
+        <div class="layui-col-md8">
+            <div style="display: flex;justify-content: space-between" >
+                <div style="display: flex">
+                    <div style="margin-left: 10px"><input id="checkAll" type="checkbox">全选</div>
+                    <div style="margin-left: 10px">删除选中商品</div>
+                </div>
+                <div style="display: flex">
+                    <div style="margin-right: 10px">已选<span id="selectSum" style="color:red;font-weight: bold;margin:5px" >0</span>件商品</div>
+                    <div style="margin-right: 10px" >总价: ￥<span id="allCost" style="color:red;font-size: 20px">0</span></div>
+                    <div style="display:flex;background:#e64347;color:white;background: red;padding:0 20px;font-size:20px;align-items: center">结算</div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="layui-col-md2"></div>
+    </div>
+
+</div>
+<div class="layui-row  layui-col-space12" >
+    <div class="layui-col-md2"></div>
+
+    <div class="layui-col-md8" >
+
+        <h2 style="color:red">全部商品 <span th:text="${session.carCount}"></span></h2>
+        <div id="goodsItemDiv" style="display: flex;border-top:solid lightgray 1px" th:each="c:${cars}">
+            <div><input th:id="'check-'+${c.shopCarId}" type="checkbox"></div>
+            <div><img th:src="@{${c.goods.img}}" style="width:100px;height: 100px"/></div>
+            <div style="width: 200px" th:text="${c.goods.title}">至尊无敌小可爱之人生总路程</div>
+            <div>￥<span th:id="'price-'+${c.shopCarId}" th:text="${c.goods.price}">39</span></div>
+            <div>
+
+                <div style="display: flex;align-items: center;">
+                    <div th:id="'addCount-'+${c.shopCarId}"
+                         style="user-select:none;cursor:pointer;width:30px;height:30px;display: flex;align-items: center;justify-content: center;background: rgb(240,240,240);font-size: 20px;font-weight: bold;">+</div>
+                    <input th:id="'count-'+${c.shopCarId}" style="height: 25px;width: 60px;" th:value="${c.count}">
+                    <div th:id="'subCount-'+${c.shopCarId}"
+                         style="user-select:none;cursor:pointer;width:30px;height:30px;display: flex;align-items: center;justify-content: center;background: rgb(240,240,240);font-size: 20px;font-weight: bold;">-</div>
+
+                </div>
+            </div>
+            <div style="font-weight: bold;width: 100px">￥<span th:id="'allPrice-'+${c.shopCarId}" th:text="${c.count*c.goods.price}">39</span></div>
+<!--            删除按钮-->
+            <div style="font-weight: bold"><button class="layui-btn layui-btn-danger layui-btn-xs">删除</button> </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md2"></div>
+
+</div>
+
+
+
+<script type="text/javascript" th:inline="javascript">
+    /**
+     * 计算商品总价
+     */
+    function getSumCost(){
+        //console.log(allCost);
+        let allCost =0;
+        let allSelect = 0
+        $("[id^=check-]").each(function () {
+            if(this.checked){
+                let shopCarId= this.id.split("-")[1];
+                console.log(shopCarId);
+                let count = parseInt($("#count-"+shopCarId).val());
+                console.log(count);
+                let price = parseFloat($("#price-"+shopCarId).text());
+                allCost += count*price;
+                $("#allPrice-"+shopCarId).text(count*price);
+                allSelect += count;
+
+
+            }
+            console.log(allSelect);
+            $("#selectSum").text(allSelect);
+            $("#allCost").text(allCost);
+            return allCost;
+
+
+        })
+
+
+    }
+    layui.use(['form', 'layedit', 'laydate','layer','table'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var table = layui.table;
+        $("[id^=addCount-]").click(function () {
+            let id = this.id.split("-")[1];
+            let count = $("#count-"+id).val();
+            count++;
+            $("#count-"+id).val(count);
+            if(count!=0){
+                $("#check-"+id)[0].checked = true;
+
+            }else {
+                $("#check-" + id)[0].checked = false;
+            }
+             getSumCost();
+        });
+        $("[id^=subCount-]").click(function () {
+
+            let id = this.id.split("-")[1];
+
+            let count = $("#count-"+id).val();
+            if(count >0){
+                count--;
+            }else{
+                alert("商品不能再减少了！！！");
+            }
+
+            $("#count-"+id).val(count);
+            if(count!=0){
+                $("#check-"+id)[0].checked = true;
+
+            }else {
+                $("#check-" + id)[0].checked = false;
+            }
+            getSumCost();
+        });
+        $("[id^=check-]").click(function () {
+            let id = this.id.split("-")[1];
+            if($("#check-"+id)[0].checked!=true){
+                $("#checkAll")[0].checked=false
+            }
+                getSumCost();
+
+        });
+        $("#checkAll").click(function () {
+            let checked = this.checked;
+            $("[id^=check-]").each(function (){
+                this.checked = checked;
+            });
+            getSumCost();
+
+
+        });
+
+        $("[id^=count-]").change(function () {
+            let id = this.id.split("-")[1];
+            let count = this.value;
+            if(count!=0){
+                $("#check-"+id)[0].checked = true;
+            }else{
+                $("#check-"+id)[0].checked = false;
+
+            }
+            getSumCost();
+
+        });
+
+
+    });
+
+</script>
+
+</body>
+</html>

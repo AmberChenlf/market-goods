@@ -62,7 +62,7 @@ public class ResponseDTO {
      * @return
      */
     public static ResponseDTO fail(String msg,Object data,Integer status, Integer errorcode ){
-        return new ResponseDTO(msg,false,data,200,errorcode);
+        return new ResponseDTO(msg,false,data,status,errorcode);
     }
     public static ResponseDTO fail(String msg){
         return new ResponseDTO(msg,false,null,null,null);

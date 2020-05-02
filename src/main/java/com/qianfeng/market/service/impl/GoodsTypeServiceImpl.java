@@ -45,7 +45,7 @@ public class GoodsTypeServiceImpl implements GoodsTypeService {
 //            g.setChildrenTypes(childrenTypes);
 //        }
 
-        List<GoodsTypeVO> childrenTypes = goodsTypeDao.selectTypesByParentIds(parentTypes );
+        List<GoodsTypeVO> childrenTypes = goodsTypeDao.selectTypesByParentIds(parentTypes);
         Map<Integer,List<GoodsTypeVO>> collect = childrenTypes.stream().collect(Collectors.groupingBy(GoodsTypeVO::getParentTypeId));
         for(GoodsTypeVO g:parentTypes){
             List<GoodsTypeVO> childTypes = collect.get(g.getGoodsTypeId());

@@ -1,7 +1,9 @@
 package com.qianfeng.market.dao;
 
 import com.qianfeng.market.pojo.entity.Goods;
+import com.qianfeng.market.pojo.vo.ShopCarVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +23,7 @@ public interface GoodsDao {
 
     int updateByPrimaryKey(Goods record);
     List<Goods> getGoodsByTypeId(Integer id);
+
+
+    List<Goods> selectGoodsByIds(@Param("cars")List carVOS);
 }

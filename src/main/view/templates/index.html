@@ -43,8 +43,8 @@
             </div>
             </div>
         </div>
-        <div style="width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
-            我的购物车(10)
+        <div onclick="window.location='/pages/back/shopCar/showMyCar'" style="color:red;width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+            我的购物车(<span th:text="${session.carCount}">0</span>)
         </div>
         <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
             登录

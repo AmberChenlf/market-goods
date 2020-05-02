@@ -21,7 +21,6 @@ public class GoodsControllerFront extends BaseController {
 
     @RequestMapping("goodsDetail/{id}")
     String goodsDetail(@PathVariable Integer id, Model model){
-        System.out.println("goods");
         model.addAttribute("goods",goodsServices.getgoodsDetail(id));
         return "pages/front/goods/goods-detail";
     }

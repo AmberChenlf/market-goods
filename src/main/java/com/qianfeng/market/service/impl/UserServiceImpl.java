@@ -28,11 +28,23 @@ public class UserServiceImpl implements UserService {
             }
 //            传过来的密码等于数据库查到的密码
             if(dbuser.getPassword().equals(user.getPassword())){
+
                 return true;
             }
         }
 
 
         return false;
+    }
+
+    /**
+     * 根据用户手机号查找用户
+     *
+     * @param phone
+     * @return
+     */
+    @Override
+    public User getUserByPhone(String phone) {
+        return userDao.selectByPhone(phone);
     }
 }

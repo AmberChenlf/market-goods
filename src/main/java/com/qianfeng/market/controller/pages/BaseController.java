@@ -3,8 +3,12 @@ package com.qianfeng.market.controller.pages;
 import com.qianfeng.market.consts.GoodsConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -43,4 +47,28 @@ public class BaseController {
         return realPath+ uploadPath;
 
     }
+
+    /**
+     * 获得HttpServletRequest对象
+     * @return
+     */
+    protected HttpServletRequest getRequest(){
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return httpServletRequest;
+
+    }
+
+
+    /**
+     * 获得session对象
+     * @return
+     */
+    protected HttpSession getSession(){
+        return this.getRequest().getSession();
+    }
+
+    protected Integer getUserId(){
+        return (Integer)getSession().getAttribute("userId");
+    }
+
 }

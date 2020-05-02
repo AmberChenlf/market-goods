@@ -17,4 +17,11 @@ public interface UserService {
 
     boolean login(User user);
 
+    /**
+     * 根据用户手机号查找用户
+     * @param phone
+     * @return
+     */
+    User getUserByPhone(String phone);
+
 }
