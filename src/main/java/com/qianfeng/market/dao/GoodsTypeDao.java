@@ -22,6 +22,6 @@ public interface GoodsTypeDao {
     int updateByPrimaryKey(GoodsType record);
     List<GoodsTypeVO> selectTypesByParentId(Integer i);
 
-    List<GoodsTypeVO> selectTypesByParentIds(@Param("ids")List parentTypes);
+    List<GoodsTypeVO> selectTypesByParentIds(@Param("pas")List parentTypes);
 
 }

@@ -93,13 +93,18 @@
   </select>
 
 
-  <select id="selectTypesByParentIds"  resultType="com.qianfeng.market.pojo.vo.GoodsTypeVO">
-    select
-    <include refid="Base_Column_List" />
-    from goods_type
-    where parent_type_id in <foreach collection="ids" item="g" separator="," close=")" open="(">
-    #{g.goodsTypeId}
-  </foreach>
+   <select id="selectTypesByParentIds"  resultType="com.qianfeng.market.pojo.vo.GoodsTypeVO">
+<!--   select-->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from goods_type-->
+<!--    where parent_type_id in <foreach collection="pas" item="g" separator="," close=")" open="(">-->
+<!--    #{g.goodsTypeId}-->
+<!--  </foreach>-->
+
+     select
+     <include refid="Base_Column_List" />
+     from goods_type
+     where parent_type_id = 1
   </select>
 
 </mapper>

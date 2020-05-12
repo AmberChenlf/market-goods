@@ -4,12 +4,16 @@ import com.qianfeng.market.dao.GoodsDao;
 import com.qianfeng.market.pojo.dto.ResponseDTO;
 import com.qianfeng.market.pojo.entity.Goods;
 import com.qianfeng.market.service.GoodsServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author bingqiong.cbb
@@ -19,6 +23,9 @@ import java.util.Map;
 public class GoodsServiceImpl implements GoodsServices {
     @Resource
     GoodsDao goodsDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 增加商品
      *
@@ -66,5 +73,26 @@ public class GoodsServiceImpl implements GoodsServices {
     @Override
     public Goods getgoodsDetail(Integer id) {
         return goodsDao.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Goods getGoodsById(Integer id) {
+        String key = "goods_"+id;
+        System.out.println(key);
+        ValueOperations<String, Goods> operations = redisTemplate.opsForValue();
+        boolean hashkey = redisTemplate.hasKey(key);
+        if(hashkey){
+            Goods goods = operations.get(key);
+            System.out.println("========从缓存中获取==========");
+            System.out.println(goods.getTitle());
+            return goods;
+        }else{
+            Goods goods = goodsDao.selectByPrimaryKey(id);
+            System.out.println("=======从sql获取=========");
+            System.out.println(goods.getTitle());
+            operations.set(key, goods,5, TimeUnit.HOURS);
+            return goods;
+        }
+        //return null;
     }
 }

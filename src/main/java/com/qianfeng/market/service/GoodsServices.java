@@ -27,4 +27,11 @@ public interface GoodsServices {
      */
     Goods getgoodsDetail(Integer id);
 
+    /**
+     * 通过id获取商品（redis测试）
+     * @param id
+     * @return
+     */
+    Goods getGoodsById(Integer id);
+
 }

@@ -7,7 +7,7 @@
     <result column="orgin_goods_id" jdbcType="INTEGER" property="orginGoodsId" />
     <result column="price" jdbcType="DOUBLE" property="price" />
     <result column="count" jdbcType="INTEGER" property="count" />
-    <result column="img" jdbcType="INTEGER" property="img" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
     <result column="old_price" jdbcType="DOUBLE" property="oldPrice" />
   </resultMap>
   <sql id="Base_Column_List">
