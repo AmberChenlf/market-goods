@@ -39,7 +39,7 @@ public class ShopCarController extends BaseController {
     @RequestMapping("edit")
     ResponseDTO edit(ShopCar shopCar, HttpSession session){
         //如果userId为空，则返回错误代码401
-        if(StringUtils.isEmpty(session.getAttribute("userId"))){
+        if(StringUtils.isEmpty(getUserId())){
 
             return ResponseDTO.fail("操作失败，请登录",null,401,401);
 
@@ -57,6 +57,9 @@ public class ShopCarController extends BaseController {
     String showMyCar(Model model){
         if(!StringUtils.isEmpty(getUserId())){
             List<ShopCarVO> cars = shopCarService.findUserCar(getUserId());
+            for (ShopCarVO s: cars){
+                System.out.println(s.getShopCarId());
+            }
             model.addAttribute("cars",cars);
         }else{
             ResponseDTO.fail("请先登录");

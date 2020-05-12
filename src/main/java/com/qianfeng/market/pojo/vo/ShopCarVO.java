@@ -15,4 +15,9 @@ public class ShopCarVO extends ShopCar {
      *
      */
     private Goods goods;
+
+    /**
+     * 购物车商品数量
+     */
+    private Integer count;
 }

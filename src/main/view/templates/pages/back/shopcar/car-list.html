@@ -54,7 +54,9 @@
                 <div style="display: flex">
                     <div style="margin-right: 10px">已选<span id="selectSum" style="color:red;font-weight: bold;margin:5px" >0</span>件商品</div>
                     <div style="margin-right: 10px" >总价: ￥<span id="allCost" style="color:red;font-size: 20px">0</span></div>
-                    <div style="display:flex;background:#e64347;color:white;background: red;padding:0 20px;font-size:20px;align-items: center">结算</div>
+                    <div  id="goStatement" style="cursor:pointer;display:flex;background:#e64347;color:white;background: red;padding:0 20px;font-size:20px;align-items: center">结算</div>
+
+
                 </div>
 
             </div>
@@ -92,11 +94,14 @@
         </div>
     </div>
 
-    <div class="layui-col-md2"></div>
+    <div class="layui-col-md2">
+        <form th:action="@{/pages/back/order/addPre}" method="post" id="carForm">
+            <input type="hidden" name="orderInfoStr" id="orderInfoStr"/>
+            <input type="hidden" name="allShop" id="allShop"/>
+        </form>
+    </div>
 
 </div>
-
-
 
 <script type="text/javascript" th:inline="javascript">
     /**
@@ -109,9 +114,7 @@
         $("[id^=check-]").each(function () {
             if(this.checked){
                 let shopCarId= this.id.split("-")[1];
-                console.log(shopCarId);
                 let count = parseInt($("#count-"+shopCarId).val());
-                console.log(count);
                 let price = parseFloat($("#price-"+shopCarId).text());
                 allCost += count*price;
                 $("#allPrice-"+shopCarId).text(count*price);
@@ -119,7 +122,6 @@
 
 
             }
-            console.log(allSelect);
             $("#selectSum").text(allSelect);
             $("#allCost").text(allCost);
             return allCost;
@@ -154,7 +156,7 @@
             let id = this.id.split("-")[1];
 
             let count = $("#count-"+id).val();
-            if(count >0){
+            if(count >1){
                 count--;
             }else{
                 alert("商品不能再减少了！！！");
@@ -200,7 +202,41 @@
 
         });
 
+        $("#goStatement").click(function () {
+            let arr=[];
+            $("[id^=check-]").each(function () {
+                let cars = [[${cars}]];
+                let car={};
 
+                if(this.checked){
+
+                    let id = this.id.split("-")[1];
+                    let count = $("#count-"+id).val();
+                    for(let x=0;x<cars.length;x++){
+                        let ca = cars[x];
+                        if(id == ca.shopCarId){
+                            //car.goods = ca.goods;
+                            car = ca;
+                            car.count = count;
+
+                        }
+
+                    }
+                    arr.push(car);
+
+
+
+                }
+
+            });
+            let x = $("#allCost").text();
+            console.log(x)
+
+            $("#allShop").val(x);
+            $("#orderInfoStr").val(JSON.stringify(arr));
+            $("#carForm").submit();
+
+        });
     });
 
 </script>

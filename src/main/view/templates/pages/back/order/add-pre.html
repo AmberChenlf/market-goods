@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href ="@{/layui/css/layui.css}"/>
+    <!--      引入layui的js文件-->
+    <script type="text/javascript" th:inline="javascript" th:src="@{/layui/layui.all.js}"></script>
+
+</head>
+<script type="text/javascript"  th:src="@{/layui/layui.js}"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+<body style ="padding:20px">
+<style>
+    #goodsItemDiv>div{
+        padding:10px 20px;
+    }
+</style>
+<!--头部-->
+<div style="border:none;display:flex;align-items: center">
+    <div style="width: 40% ;">
+        <img src="/images/index/logo.gif">
+    </div>
+    <div style="width: 40%">
+        <div style="display: flex;border: solid red 2px;">
+            <div style="width:80%">
+                <input type="text" style="height: 30px;border:none;width:100%">
+            </div>
+            <div style="color:white; background:red; padding: 5px 20px;width:20%;text-align:center">
+                搜索
+            </div>
+        </div>
+    </div>
+    <div style="color:red;width: 15%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        我的购物车(<span id="myCarCount" th:text="${session.carCount}">0</span>)
+    </div>
+    <div onclick="window.location='/pages/front/loginPage'" id="login_btn" style="width: 5%;text-align:center;border:solid lightgray 1px;backgroud:rgb(215,245,245);padding:6px;margin-left: 30px">
+        登录
+    </div>
+
+</div>
+<!--最后悬浮框-->
+<div style="width: 100%;position: fixed;bottom:0;height: 60px;box-shadow: 0 0 10px lightgray">
+    <div class="layui-row  layui-col-space12" >
+        <div class="layui-col-md2"></div>
+        <div class="layui-col-md8">
+            <div style="display: flex;justify-content: space-between" >
+                <div style="display: flex">
+\                    <div style="margin-left: 10px">共节省<span th:text="${allRelief}"></span></div>
+                </div>
+                <div style="display: flex">
+                    <div style="margin-right: 10px" >总价: ￥<span id="allCost" th:text="${allCost}" style="color:red;font-size: 20px">0</span></div>
+                    <div  id="commit" style="cursor:pointer;display:flex;background:#e64347;color:white;background: red;padding:0 20px;font-size:20px;align-items: center">提交</div>
+                    <form th:action="@{/pages/back/order/add}" method="post" id="orForm">
+                        <input type="hidden" name="orderInfo" id="orderInfo" th:value="${orderInfo}"/>
+                        <input type="hidden" name="receiverAddress" id="receiverAddress" th:if="${morenAddress}!=null" th:value="${morenAddress.detailAddress}"/>
+                        <input type="hidden" name="receiverPhone" id="receiverPhone" th:if="${morenAddress}!=null" th:value="${morenAddress.phone}"/>
+                        <input type="hidden" name="receiverName" id="receiverName" th:if="${morenAddress}!=null" th:value="${morenAddress.receiver}"/>
+
+                        <input type="hidden" name="actualPayment" id="actullyPaid" th:value="${actullyPaid}"/>
+                        <input type="hidden" name="totalDeduction" id="allRelief" th:value="${allRelief}"/>
+
+                        <input type="hidden" name="allCost" id="allCostVal" th:value="${allCost}"/>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="layui-col-md2"></div>
+    </div>
+
+</div>
+
+<div class="layui-row  layui-col-space12" >
+    <div class="layui-col-md2"></div>
+
+    <div class="layui-col-md8" >
+
+        <h2 style="color:red">确认订单 <span th:text="${session.carCount}"></span></h2>
+
+        <div th:each="a:${morenAddress}">
+            <div>
+                <div>
+                    <span th:text="${a.receiver}"></span>
+                    <span th:text="${a.phone}"></span>
+                </div>
+                <div >
+                    <span style="background: red" th:text="${a.tag}"></span>
+                    <span th:text="${a.detailAddress}"></span>
+                </div>
+            </div>
+
+        </div>
+        <div style="display: flex;" th:each="c:${cars}">
+            <div><img th:src="@{${c.goods.img}}" style="width:100px;height: 100px"/></div>
+            <div style="width: 200px" th:text="${c.goods.title}">至尊无敌小可爱之人生总路程</div>
+
+            <div>￥<span th:id="'price-'+${c.shopCarId}" th:text="${c.goods.price}">39</span>
+            *
+                <span th:text="${c.count}">
+
+                </span>
+            </div>
+            <div style="font-weight: bold;width: 100px;margin-left:15px">￥<span th:id="'allPrice-'+${c.shopCarId}" th:text="${c.count*c.goods.price}">39</span></div>
+
+            <div style="font-weight: bold;width: 100px">
+                total <span th:text="${#lists.size(cars)}">5</span>件商品
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-col-md2"></div>
+
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    /**
+     * 计算商品总价
+     */
+    function getSumCost(){
+        //console.log(allCost);
+        let allCost =0;
+        let allSelect = 0
+        $("[id^=check-]").each(function () {
+            if(this.checked){
+                let shopCarId= this.id.split("-")[1];
+                console.log(shopCarId);
+                let count = parseInt($("#count-"+shopCarId).val());
+                console.log(count);
+                let price = parseFloat($("#price-"+shopCarId).text());
+                allCost += count*price;
+                $("#allPrice-"+shopCarId).text(count*price);
+                allSelect += count;
+
+
+            }
+            console.log(allSelect);
+            $("#selectSum").text(allSelect);
+            $("#allCost").text(allCost);
+            return allCost;
+
+
+        })
+
+
+    }
+    layui.use(['form', 'layedit', 'laydate','layer','table'], function() {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        var table = layui.table;
+
+
+        $("#commit").click(function () {
+            //提交订单前，把订单详情提交
+            $("#orForm").submit();
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
