@@ -13,10 +13,26 @@ class MarketGoodsApplicationTests {
     GoodsServices goodsServices;
     @Resource
     miaoShaController m;
+
+
     @Test
     void contextLoads() {
         goodsServices.getGoodsById(1);
-        String s = m.miaosha(1);
+        Thread[] threads = new Thread[100];
+        for (int i = 0; i < 100; i++) {
+            threads[i] = new Thread(new Runnable() {
+                @Override
+                public void run()  {
+                    try {
+                        m.miaosha(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            threads[i].start();
+
+        }
     }
 
 }
