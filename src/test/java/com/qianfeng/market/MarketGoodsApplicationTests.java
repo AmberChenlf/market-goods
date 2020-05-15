@@ -17,9 +17,8 @@ class MarketGoodsApplicationTests {
 
     @Test
     void contextLoads() {
-        goodsServices.getGoodsById(1);
         Thread[] threads = new Thread[100];
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 9; i++) {
             threads[i] = new Thread(new Runnable() {
                 @Override
                 public void run()  {
@@ -32,6 +31,16 @@ class MarketGoodsApplicationTests {
             });
             threads[i].start();
 
+        }
+    }
+
+    @Test
+    void testInit(){
+        //System.out.println("do");
+        try {
+            m.miaosha(1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -14,7 +14,8 @@ public class miaoShaController {
     RedisUtil redisUtil;
     public String miaosha(Integer goodsId) throws Exception {
         String key = "goods_"+goodsId;
-        synchronized (this) {
+        //synchronized (this) {
+
             Goods goods = (Goods) redisUtil.get(key);
             if(goods.getCount()<=0){
                 throw new Exception("商品已经售完！");
@@ -28,6 +29,6 @@ public class miaoShaController {
                 return goods.getTitle();
             }
         }
-    }
+    //}
 
 }
