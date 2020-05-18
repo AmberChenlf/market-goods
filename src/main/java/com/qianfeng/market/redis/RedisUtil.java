@@ -5,6 +5,8 @@ import redis.clients.jedis.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class RedisUtil {
 
@@ -74,7 +76,36 @@ public class RedisUtil {
 //        return redisTemplate.hasKey(key);
 //    }
 
-    private Jedis jedis = new Jedis("127.0.0.1",6379);
+    private static Jedis jedis = new Jedis("127.0.0.1",6379);
+    public static long set(String key, String field,String value){
+        long returnStatus = jedis.hset(key,field,value);
+        return returnStatus;
+    }
+    public static String get(String key,String field){
+        String returnStatus = jedis.hget(key, field);
+        return returnStatus;
+    }
+    public static long incr(String key,String field,int value){
+        long j = jedis.hincrBy(key,field,value);
+        return j;
+    }
+    public static void watch(String key){
+        jedis.watch(key);
+    }
+    public static void unwatch(){
+        jedis.unwatch();
+    }
+
+    /**
+     * 是否存在
+     * @param key
+     * @param field
+     * @return
+     */
+    public static boolean exist(String key,String field){
+        boolean status = jedis.hexists(key,field);
+        return status;
+    }
 
 
 

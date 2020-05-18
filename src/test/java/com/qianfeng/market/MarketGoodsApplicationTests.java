@@ -18,7 +18,7 @@ class MarketGoodsApplicationTests {
     @Test
     void contextLoads() {
         Thread[] threads = new Thread[100];
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 15; i++) {
             threads[i] = new Thread(new Runnable() {
                 @Override
                 public void run()  {

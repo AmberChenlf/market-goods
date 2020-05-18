@@ -78,21 +78,22 @@ public class GoodsServiceImpl implements GoodsServices {
     }
 
     @Override
-    public Goods getGoodsById(Integer id) {
+    public String getGoodsById(Integer id) {
         String key = "goods_"+id;
         System.out.println(key);
-        boolean hashkey = redisUtil.hashKey(key);
+        String scount="count";
+        boolean hashkey = redisUtil.exist(key,scount);
         if(hashkey){
-            Goods goods = (Goods) redisUtil.get(key);
+            String scount2 = redisUtil.get(key, scount);
             System.out.println("========从缓存中获取==========");
-            System.out.println(goods.getTitle());
-            return goods;
+            System.out.println(scount2);
+            return scount2;
         }else{
             Goods goods = goodsDao.selectByPrimaryKey(id);
             System.out.println("=======从sql获取=========");
             System.out.println(goods.getTitle());
-            redisUtil.set(key, goods);
-            return goods;
+            redisUtil.set(key,scount,Integer.toString(goods.getCount()));
+            return null;
         }
         //return null;
     }

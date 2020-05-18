@@ -16,18 +16,20 @@ public class miaoShaController {
         String key = "goods_"+goodsId;
         //synchronized (this) {
 
-            Goods goods = (Goods) redisUtil.get(key);
-            if(goods.getCount()<=0){
+            redisUtil.watch(key);
+            System.out.println(redisUtil.get(key,"count"));
+            if(Integer.parseInt(redisUtil.get(key,"count"))<=0){
                 throw new Exception("商品已经售完！");
             }else {
-                System.out.println("秒杀前：" + goods.getCount());
-                goods.setCount(goods.getCount() - 1);
-                redisUtil.getAndSet(key, goods);
-                Goods goods2 = (Goods) redisUtil.get(key);
-                System.out.println("秒杀后：" + goods2.getCount());
+                System.out.println("秒杀前：" + redisUtil.get(key,"count"));
+                redisUtil.incr(key,"count",-1);
+                System.out.println("秒杀后：" + redisUtil.get(key,"count"));
+                System.out.println("秒杀成功");
 
-                return goods.getTitle();
+
             }
+            redisUtil.unwatch();
+            return "秒杀成功";
         }
     //}
 

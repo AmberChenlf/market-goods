@@ -31,9 +31,9 @@ public class IndexController {
     @RequestMapping("/")
     @ResponseBody   //表示返回json字符串给前端
     String index(){
-        Goods g = goodsServices.getGoodsById(1);
+        //Goods g = goodsServices.getGoodsById(1);
 
-        Goods s = goodsServices.getGoodsById(1);
+        //Goods s = goodsServices.getGoodsById(1);
         //model.addAttribute("types",goodsTypeService.selectTypesByParentId(-1));
 
         return "c1";

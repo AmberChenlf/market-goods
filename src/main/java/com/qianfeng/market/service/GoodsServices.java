@@ -32,6 +32,6 @@ public interface GoodsServices {
      * @param id
      * @return
      */
-    Goods getGoodsById(Integer id);
+    String getGoodsById(Integer id);
 
 }
