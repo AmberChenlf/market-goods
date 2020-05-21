@@ -11,101 +11,121 @@ import java.util.Map;
 public class RedisUtil {
 
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
-//
-//    /**
-//     * 读取缓存
-//     * @param key
-//     * @return
-//     */
-//    public Object get(final String key){
-//        return redisTemplate.opsForValue().get(key);
-//    }
-//
-//    /**
-//     * 写入缓存
-//     * @param key
-//     * @param value
-//     * @return
-//     */
-//    public boolean set(final String key,Object value){
-//        boolean result = false;
-//        try{
-//            redisTemplate.opsForValue().set(key,value);
-//            result = true;
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-//
-//    /**
-//     * 更新缓存
-//     * @param key
-//     * @param value
-//     * @return
-//     */
-//    public boolean getAndSet(final String key, Object value){
-//        boolean result = false;
-//        try{
-//            redisTemplate.opsForValue().getAndSet(key, value);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-//
-//    /**
-//     * 删除缓存
-//     * @param key
-//     * @return
-//     */
-//    public boolean delete(final String key){
-//        boolean result = false;
-//        try{
-//            redisTemplate.delete(key);
-//            result = true;
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-//
-//    public  boolean hashKey(final String key){
-//        return redisTemplate.hasKey(key);
-//    }
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 
-    private static Jedis jedis = new Jedis("127.0.0.1",6379);
-    public static long set(String key, String field,String value){
-        long returnStatus = jedis.hset(key,field,value);
-        return returnStatus;
+    /**
+     * 读取缓存
+     * @param key
+     * @return
+     */
+    public String get(final String key){
+        return redisTemplate.opsForValue().get(key);
     }
-    public static String get(String key,String field){
-        String returnStatus = jedis.hget(key, field);
-        return returnStatus;
+
+    /**
+     * 写入缓存
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean set(final String key,String  value){
+        boolean result = false;
+        try{
+            redisTemplate.opsForValue().set(key,value);
+            result = true;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
-    public static long incr(String key,String field,int value){
-        long j = jedis.hincrBy(key,field,value);
-        return j;
+
+    /**
+     * 更新缓存
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean getAndSet(final String key, String value){
+        boolean result = false;
+        try{
+            redisTemplate.opsForValue().getAndSet(key, value);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
-    public static void watch(String key){
-        jedis.watch(key);
-    }
-    public static void unwatch(){
-        jedis.unwatch();
+
+    /**
+     * 删除缓存
+     * @param key
+     * @return
+     */
+    public boolean delete(final String key){
+        boolean result = false;
+        try{
+            redisTemplate.delete(key);
+            result = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
      * 是否存在
      * @param key
-     * @param field
      * @return
      */
-    public static boolean exist(String key,String field){
-        boolean status = jedis.hexists(key,field);
-        return status;
+
+    public  boolean exists(final String key){
+        return redisTemplate.hasKey(key);
     }
+
+    /**
+     * 增减操作
+     * @param key
+     * @return
+     */
+    public Long incr(final String key,final Integer in){
+        System.out.println();
+        Long x = redisTemplate.opsForValue().increment(key,in);
+        return x;
+    }
+    /**
+     * jedis操作
+     */
+
+//    private static Jedis jedis = new Jedis("127.0.0.1",6379);
+//    public static long set(String key, String field,String value){
+//        long returnStatus = jedis.hset(key,field,value);
+//        return returnStatus;
+//    }
+//    public static String get(String key,String field){
+//        String returnStatus = jedis.hget(key, field);
+//        return returnStatus;
+//    }
+//    public static long incr(String key,String field,int value){
+//        long j = jedis.hincrBy(key,field,value);
+//        return j;
+//    }
+//    public static void watch(String key){
+//        jedis.watch(key);
+//    }
+//    public static void unwatch(){
+//        jedis.unwatch();
+//    }
+//
+//    /**
+//     * 是否存在
+//     * @param key
+//     * @param field
+//     * @return
+//     */
+//    public static boolean exist(String key,String field){
+//        boolean status = jedis.hexists(key,field);
+//        return status;
+//    }
 
 
 

@@ -34,4 +34,9 @@ public interface GoodsServices {
      */
     String getGoodsById(Integer id);
 
+    /**
+     *
+     */
+    ResponseDTO updateGoodsByCount(Integer id, Integer count);
+
 }

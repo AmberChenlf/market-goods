@@ -81,10 +81,9 @@ public class GoodsServiceImpl implements GoodsServices {
     public String getGoodsById(Integer id) {
         String key = "goods_"+id;
         System.out.println(key);
-        String scount="count";
-        boolean hashkey = redisUtil.exist(key,scount);
+        boolean hashkey = redisUtil.exists(key);
         if(hashkey){
-            String scount2 = redisUtil.get(key, scount);
+            String scount2 = redisUtil.get(key);
             System.out.println("========从缓存中获取==========");
             System.out.println(scount2);
             return scount2;
@@ -92,9 +91,31 @@ public class GoodsServiceImpl implements GoodsServices {
             Goods goods = goodsDao.selectByPrimaryKey(id);
             System.out.println("=======从sql获取=========");
             System.out.println(goods.getTitle());
-            redisUtil.set(key,scount,Integer.toString(goods.getCount()));
-            return null;
+            redisUtil.set(key,Integer.toString(goods.getCount()));
+            System.out.println("redis add successful");
+            String x = redisUtil.get(key);
+            System.out.println(x);
+            System.out.println("test over");
+
         }
-        //return null;
+        return null;
+    }
+
+    /**
+     * @param count
+     */
+    @Override
+    public ResponseDTO updateGoodsByCount(Integer id,Integer count) {
+        Goods good = new Goods();
+        good.setGoodsId(id);
+        good.setCount(count);
+
+         goodsDao.updateByPrimaryKeySelective(good);
+         Goods goods = goodsDao.selectByPrimaryKey(id);
+         if(goods.getCount()==count){
+             return ResponseDTO.ok("更新成功");
+         }else{
+             return ResponseDTO.fail("更新失败");
+         }
     }
 }
