@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 
 @Controller
-public class miaoShaController {
+public class MiaoShaController {
    @Resource
     RedisUtil redisUtil;
    @Resource
